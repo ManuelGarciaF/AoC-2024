@@ -7,6 +7,8 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+
+	"github.com/ManuelGarciaF/AoC-2024/commons"
 )
 
 func main() {
@@ -23,7 +25,7 @@ func solvePart1(l, r []int) int {
 	}
 	sum := 0
 	for i := range l {
-		sum += abs(l[i] - r[i])
+		sum += commons.Abs(l[i] - r[i])
 	}
 
 	return sum
@@ -41,13 +43,6 @@ func solvePart2(l, r []int) int {
 	}
 
 	return sum
-}
-
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
 }
 
 func parseInput(path string) ([]int, []int) {
