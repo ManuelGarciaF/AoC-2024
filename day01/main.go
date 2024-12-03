@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"slices"
-	"strconv"
 	"strings"
 
 	"github.com/ManuelGarciaF/AoC-2024/commons"
@@ -46,10 +45,7 @@ func solvePart2(l, r []int) int {
 }
 
 func parseInput(path string) ([]int, []int) {
-	file, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
+	file := commons.Must(os.Open(path))
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
@@ -59,16 +55,8 @@ func parseInput(path string) ([]int, []int) {
 
 	for scanner.Scan() {
 		ints := strings.Split(scanner.Text(), "   ")
-		l, err := strconv.Atoi(ints[0])
-		if err != nil {
-			panic(err)
-		}
-		r, err := strconv.Atoi(ints[1])
-		if err != nil {
-			panic(err)
-		}
-		left = append(left, l)
-		right = append(right, r)
+		left = append(left, commons.MustAtoi(ints[0]))
+		right = append(right, commons.MustAtoi(ints[1]))
 	}
 
 	return left, right

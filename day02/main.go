@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"slices"
-	"strconv"
 	"strings"
 
 	"github.com/ManuelGarciaF/AoC-2024/commons"
@@ -54,10 +53,7 @@ func tryRemoveOne(report []int) bool {
 }
 
 func parseInput(path string) [][]int {
-	file, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
+	file := commons.Must(os.Open(path))
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
@@ -68,11 +64,7 @@ func parseInput(path string) [][]int {
 		intsStrings := strings.Split(scanner.Text(), " ")
 		line := make([]int, 0, len(intsStrings))
 		for _, intS := range intsStrings {
-			v, err := strconv.Atoi(intS)
-			if err != nil {
-				panic(err)
-			}
-			line = append(line, v)
+			line = append(line, commons.MustAtoi(intS))
 		}
 		reports = append(reports, line)
 	}
