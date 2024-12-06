@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"maps"
 	"os"
+	"sync"
+	"sync/atomic"
 
 	c "github.com/ManuelGarciaF/AoC-2024/commons"
 )
@@ -40,21 +42,28 @@ func path(obstacles c.Set[c.Coord], startingPosition c.Coord, xSize int, ySize i
 func solvePart2(obstacles c.Set[c.Coord], startingPosition c.Coord, xSize, ySize int) int {
 	visited := path(obstacles, startingPosition, xSize, ySize)
 
+	var sum atomic.Int32 // Atomic counter for results
+	var wg sync.WaitGroup
+
 	// Try adding an obstacle at every step
-	count := 0
 	for pos := range visited {
 		// Can't add an obstacle on starting position
 		if pos.Equals(startingPosition) {
 			continue
 		}
-		obs2 := maps.Clone(obstacles).Add(pos)
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
 
-		if loops(obs2, startingPosition, xSize, ySize) {
-			count++
-		}
+			obs2 := maps.Clone(obstacles).Add(pos)
+			if loops(obs2, startingPosition, xSize, ySize) {
+				sum.Add(1)
+			}
+		}()
 	}
 
-	return count
+	wg.Wait()
+	return int(sum.Load())
 }
 
 type Step struct {
