@@ -30,8 +30,9 @@ func NewSet[T comparable]() Set[T] {
 	return make(Set[T])
 }
 
-func (s Set[T]) Add(e T) {
+func (s Set[T]) Add(e T) Set[T] {
 	s[e] = struct{}{}
+	return s
 }
 
 func (s Set[T]) Contains(e T) bool {
@@ -39,8 +40,9 @@ func (s Set[T]) Contains(e T) bool {
 	return ok
 }
 
-func (s Set[T]) Remove(e T) {
+func (s Set[T]) Remove(e T) Set[T] {
 	delete(s, e)
+	return s
 }
 
 func (s Set[T]) Size() int {
