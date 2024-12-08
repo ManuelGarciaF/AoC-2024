@@ -60,3 +60,12 @@ func (s Set[T]) String() string {
 	str += "}"
 	return str
 }
+
+// Why is this not in the stdlib
+func Map[T any, U any](s []T, f func (T) U) []U {
+	new := make([]U, len(s))
+	for i, v := range s {
+		new[i] = f(v)
+	}
+	return new
+}
