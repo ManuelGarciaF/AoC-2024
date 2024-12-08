@@ -1,5 +1,7 @@
 package commons
 
+import "fmt"
+
 type Coord struct {
 	X int
 	Y int
@@ -23,6 +25,14 @@ func (c Coord) Move(d Direction) Coord {
 
 func (c1 Coord) Equals(c2 Coord) bool {
 	return c1.X == c2.X && c1.Y == c2.Y
+}
+
+func (c Coord) Inbounds(xSize, ySize int) bool {
+	return c.X >= 0 && c.Y >= 0 && c.X <= xSize && c.Y <= ySize
+}
+
+func (c Coord) String() string {
+	return "(" + fmt.Sprint(c.X) + ", " + fmt.Sprint(c.Y) + ")"
 }
 
 type Direction int
@@ -63,4 +73,3 @@ var RotateRight = map[Direction]Direction{
 	DOWN:  LEFT,
 	LEFT:  UP,
 }
-

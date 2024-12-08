@@ -49,6 +49,14 @@ func (s Set[T]) Size() int {
 	return len(s)
 }
 
+func (s Set[T]) Union(other Set[T]) Set[T] {
+	for v := range other {
+		s.Add(v)
+	}
+
+	return s
+}
+
 func (s Set[T]) String() string {
 	str := "{"
 	for e := range s {
