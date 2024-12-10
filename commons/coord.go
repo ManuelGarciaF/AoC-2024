@@ -31,6 +31,11 @@ func (c Coord) Inbounds(xSize, ySize int) bool {
 	return c.X >= 0 && c.Y >= 0 && c.X <= xSize && c.Y <= ySize
 }
 
+// Uses first index as y and second as x
+func IndexMap[T any](m [][]T, c Coord) T {
+	return m[c.Y][c.X]
+}
+
 func (c Coord) String() string {
 	return "(" + fmt.Sprint(c.X) + ", " + fmt.Sprint(c.Y) + ")"
 }

@@ -2,6 +2,7 @@ package commons
 
 import (
 	"fmt"
+	"maps"
 	"strconv"
 )
 
@@ -49,6 +50,10 @@ func (s Set[T]) Size() int {
 	return len(s)
 }
 
+func (s Set[T]) Clone() Set[T] {
+	return maps.Clone(s)
+}
+
 func (s Set[T]) Union(other Set[T]) Set[T] {
 	for v := range other {
 		s.Add(v)
@@ -69,11 +74,22 @@ func (s Set[T]) String() string {
 	return str
 }
 
-// Why is this not in the stdlib
-func Map[T any, U any](s []T, f func (T) U) []U {
+func Map[T any, U any](s []T, f func(T) U) []U {
 	new := make([]U, len(s))
 	for i, v := range s {
 		new[i] = f(v)
 	}
 	return new
+}
+
+func Foldl[T, U any](seed T, xs []U, f func(T, U) T) T {
+	acc := seed
+	for _, x := range xs {
+		acc = f(acc, x)
+	}
+	return acc
+}
+
+func Sum(xs []int) int {
+	return Foldl(0, xs, func(acc, x int) int { return acc + x })
 }
