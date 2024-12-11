@@ -102,14 +102,13 @@ func Sum(xs []int) int {
 	return Foldl(0, xs, func(acc, x int) int { return acc + x })
 }
 
-/* Does not work with recursive functions unless created inline with the
- * variable declared before.
- * e.g.:
- *    var fib func(int) int
- *    fib = c.Memoize(func(n int) int {
- *        code that uses fib()
- *    })
- */
+// Does not work with recursive functions unless created inline with the
+// variable declared before.
+// e.g.:
+//  var fib func(int) int
+//  fib = c.Memoize(func(n int) int {
+//      code that uses fib()
+//  })
 func Memoize[T comparable, U any](f func(T) U) func(T) U {
 	cache := make(map[T]U)
 	return func(t T) U {
