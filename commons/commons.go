@@ -82,6 +82,14 @@ func Map[T any, U any](s []T, f func(T) U) []U {
 	return new
 }
 
+func FlatMap[T any, U any](s []T, f func(T) []U) []U {
+	new := make([]U, 0)
+	for _, v := range s {
+		new = append(new, f(v)...)
+	}
+	return new
+}
+
 func Foldl[T, U any](seed T, xs []U, f func(T, U) T) T {
 	acc := seed
 	for _, x := range xs {
@@ -92,4 +100,23 @@ func Foldl[T, U any](seed T, xs []U, f func(T, U) T) T {
 
 func Sum(xs []int) int {
 	return Foldl(0, xs, func(acc, x int) int { return acc + x })
+}
+
+/* Does not work with recursive functions unless created inline with the
+ * variable declared before.
+ * e.g.:
+ *    var fib func(int) int
+ *    fib = c.Memoize(func(n int) int {
+ *        code that uses fib()
+ *    })
+ */
+func Memoize[T comparable, U any](f func(T) U) func(T) U {
+	cache := make(map[T]U)
+	return func(t T) U {
+		if v, ok := cache[t]; ok {
+			return v
+		}
+		cache[t] = f(t)
+		return cache[t]
+	}
 }

@@ -16,44 +16,42 @@ func main() {
 	fmt.Println("Part 2: ", solve(stones, 75))
 }
 
-type Stone struct {
-	num, blinksLeft int
-}
 func solve(stones []int, blinks int) int {
 
-	cache := make(map[Stone]int)
+	type Stone struct {
+		num, blinksLeft int
+	}
+
+	var amount func(Stone) int
+	amount = c.Memoize(func(s Stone) int {
+		// Base case
+		if s.blinksLeft == 0 {
+			return 1
+		}
+
+		// Rules
+		blinks := s.blinksLeft - 1
+		if s.num == 0 {
+			return amount(Stone{1, blinks})
+		}
+
+		str := strconv.Itoa(s.num)
+		if len(str)%2 == 0 {
+			// Split number in halves
+			half := len(str)/2
+			n1 := c.MustAtoi(str[:half])
+			n2 := c.MustAtoi(str[half:])
+			return amount(Stone{n1, blinks}) + amount(Stone{n2, blinks})
+		}
+
+		return amount(Stone{s.num * 2024, blinks})
+	})
 
 	count := 0
 	for _, s := range stones {
-		count += amount(Stone{s, blinks}, &cache)
+		count += amount(Stone{s, blinks})
 	}
 	return count
-}
-
-func amount(s Stone, cache *map[Stone]int) int {
-	// Memoization
-	if v, ok := (*cache)[s]; ok {
-		return v
-	}
-
-	// Base case
-	if s.blinksLeft==0 {
-		return 1
-	}
-
-	// Rules, update the cache with recursive calls
-	blinks := s.blinksLeft-1
-	if s.num == 0 {
-		(*cache)[s] = amount(Stone{1, blinks}, cache)
-	} else if str := strconv.Itoa(s.num); len(str)%2 == 0 {
-		n1 := c.MustAtoi(str[:len(str)/2])
-		n2 := c.MustAtoi(str[len(str)/2:])
-		(*cache)[s] = amount(Stone{n1, blinks}, cache) + amount(Stone{n2, blinks}, cache)
-	} else {
-		(*cache)[s] = amount(Stone{s.num * 2024, blinks}, cache)
-	}
-
-	return (*cache)[s]
 }
 
 func parseInput(path string) []int {
