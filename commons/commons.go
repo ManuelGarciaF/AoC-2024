@@ -31,8 +31,10 @@ func NewSet[T comparable]() Set[T] {
 	return make(Set[T])
 }
 
-func (s Set[T]) Add(e T) Set[T] {
-	s[e] = struct{}{}
+func (s Set[T]) Add(es ...T) Set[T] {
+	for _, e := range es {
+		s[e] = struct{}{}
+	}
 	return s
 }
 
@@ -98,6 +100,34 @@ func Foldl[T, U any](seed T, xs []U, f func(T, U) T) T {
 	return acc
 }
 
+func Filter[T any](xs []T, f func(T) bool) []T {
+	new := make([]T, 0)
+	for _, x := range xs {
+		if f(x) {
+			new = append(new, x)
+		}
+	}
+	return new
+}
+
+func Any[T any](xs []T, f func(T) bool) bool {
+	for _, x := range xs {
+		if f(x) {
+			return true
+		}
+	}
+	return false
+}
+
+func All[T any](xs []T, f func(T) bool) bool {
+	for _, x := range xs {
+		if !f(x) {
+			return false
+		}
+	}
+	return true
+}
+
 func Sum(xs []int) int {
 	return Foldl(0, xs, func(acc, x int) int { return acc + x })
 }
@@ -105,10 +135,11 @@ func Sum(xs []int) int {
 // Does not work with recursive functions unless created inline with the
 // variable declared before.
 // e.g.:
-//  var fib func(int) int
-//  fib = c.Memoize(func(n int) int {
-//      code that uses fib()
-//  })
+//
+//	var fib func(int) int
+//	fib = c.Memoize(func(n int) int {
+//	    code that uses fib()
+//	})
 func Memoize[T comparable, U any](f func(T) U) func(T) U {
 	cache := make(map[T]U)
 	return func(t T) U {

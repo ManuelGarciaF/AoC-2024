@@ -49,6 +49,13 @@ const (
 	RIGHT
 )
 
+var Directions = []Direction{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+}
+
 var InverseDir = map[Direction]Direction{
 	UP:    DOWN,
 	DOWN:  UP,
@@ -77,4 +84,25 @@ var RotateRight = map[Direction]Direction{
 	RIGHT: DOWN,
 	DOWN:  LEFT,
 	LEFT:  UP,
+}
+
+var OrthogonalDirections = map[Direction][]Direction{
+	UP:    {LEFT, RIGHT},
+	DOWN:  {LEFT, RIGHT},
+	LEFT:  {UP, DOWN},
+	RIGHT: {UP, DOWN},
+}
+
+func (d Direction) String() string {
+	switch d {
+	case UP:
+		return "UP"
+	case DOWN:
+		return "DOWN"
+	case LEFT:
+		return "LEFT"
+	case RIGHT:
+		return "RIGHT"
+	}
+	panic("Unreachable")
 }
