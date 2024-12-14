@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"image/png"
 	"os"
 	"regexp"
 	"strings"
-
-	"golang.org/x/image/bmp"
 
 	c "github.com/ManuelGarciaF/AoC-2024/commons"
 )
@@ -85,9 +84,9 @@ func solvePart2(robots []Robot, xSize, ySize int) {
 			}
 		}
 
-		path := fmt.Sprintf("day14/images/step-%v.bmp", i+1)
+		path := fmt.Sprintf("day14/images/step-%v.png", i+1)
 		file := c.Must(os.Create(path))
-		bmp.Encode(file, img)
+		png.Encode(file, img)
 		file.Close()
 	}
 }
