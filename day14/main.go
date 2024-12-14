@@ -27,6 +27,8 @@ func main() {
 	}
 
 	fmt.Println("Part 1: ", solvePart1(robots, xSize, ySize))
+
+	// WARNING this creates 7000 images
 	solvePart2(robots, xSize, ySize)
 }
 
