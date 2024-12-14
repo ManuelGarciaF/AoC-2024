@@ -65,6 +65,10 @@ func solvePart2(robots []Robot, xSize, ySize int) {
 		}
 	}
 
+	if err := os.Mkdir("./day14-images", os.ModePerm); err != nil {
+		panic(err)
+	}
+
 	for i := 0; i < 7000; i++ {
 		robots = c.Map(robots, advance)
 		positions := make(map[c.Coord]int)
@@ -84,7 +88,7 @@ func solvePart2(robots []Robot, xSize, ySize int) {
 			}
 		}
 
-		path := fmt.Sprintf("day14/images/step-%v.png", i+1)
+		path := fmt.Sprintf("./day14-images/step-%v.png", i+1)
 		file := c.Must(os.Create(path))
 		png.Encode(file, img)
 		file.Close()
