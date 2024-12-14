@@ -1,6 +1,9 @@
 package commons
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Coord struct {
 	X int
@@ -17,6 +20,20 @@ func (c Coord) Sub(other Coord) Coord {
 
 func (c Coord) Scale(factor int) Coord {
 	return Coord{c.X * factor, c.Y * factor}
+}
+
+func (c Coord) WrapAround(xSize, ySize int) Coord {
+	x := c.X
+	y := c.Y
+	// Modulo doesn't work correctly with negative numbers
+	if x < 0 {
+		x += int(math.Ceil(math.Abs(float64(x)/float64(xSize))))*xSize
+	}
+	if y < 0 {
+		y += int(math.Ceil(math.Abs(float64(y)/float64(ySize))))*ySize
+	}
+
+	return Coord{x % xSize, y % ySize}
 }
 
 func (c Coord) Move(d Direction) Coord {
