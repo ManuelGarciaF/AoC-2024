@@ -53,6 +53,10 @@ func IndexMap[T any](m [][]T, c Coord) T {
 	return m[c.Y][c.X]
 }
 
+func SetMap[T any](m *[][]T, c Coord, t T) {
+	(*m)[c.Y][c.X] = t
+}
+
 func (c Coord) String() string {
 	return "(" + fmt.Sprint(c.X) + ", " + fmt.Sprint(c.Y) + ")"
 }
