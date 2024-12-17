@@ -77,13 +77,6 @@ var Directions = []Direction{
 	RIGHT,
 }
 
-var InverseDir = map[Direction]Direction{
-	UP:    DOWN,
-	DOWN:  UP,
-	LEFT:  RIGHT,
-	RIGHT: LEFT,
-}
-
 // Suposes (0,0) at top-left corner, with y going downwards
 // and x going to the right
 var Offsets = map[Direction]Coord{
@@ -100,11 +93,25 @@ var DirFromOffset = map[Coord]Direction{
 	{Y: 0, X: 1}:  RIGHT,
 }
 
-var RotateRight = map[Direction]Direction{
+var InverseDir = map[Direction]Direction{
+	UP:    DOWN,
+	DOWN:  UP,
+	LEFT:  RIGHT,
+	RIGHT: LEFT,
+}
+
+var RotateClockwise = map[Direction]Direction{
 	UP:    RIGHT,
 	RIGHT: DOWN,
 	DOWN:  LEFT,
 	LEFT:  UP,
+}
+
+var RotateCounterClockwise = map[Direction]Direction{
+	UP:    LEFT,
+	RIGHT: UP,
+	DOWN:  RIGHT,
+	LEFT:  DOWN,
 }
 
 var OrthogonalDirections = map[Direction][]Direction{

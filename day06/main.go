@@ -31,7 +31,7 @@ func path(obstacles c.Set[c.Coord], startingPosition c.Coord, xSize int, ySize i
 	currDir := c.UP
 	for curr.X >= 0 && curr.Y >= 0 && curr.X <= xSize && curr.Y <= ySize {
 		for obstacles.Contains(curr.Move(currDir)) {
-			currDir = c.RotateRight[currDir]
+			currDir = c.RotateClockwise[currDir]
 		}
 		visited.Add(curr)
 		curr = curr.Move(currDir)
@@ -78,7 +78,7 @@ func loops(obstacles c.Set[c.Coord], startingPosition c.Coord, xSize int, ySize 
 	currDir := c.UP
 	for curr.X >= 0 && curr.Y >= 0 && curr.X <= xSize && curr.Y <= ySize {
 		for obstacles.Contains(curr.Move(currDir)) {
-			currDir = c.RotateRight[currDir]
+			currDir = c.RotateClockwise[currDir]
 		}
 		step := Step{c: curr, d: currDir}
 
